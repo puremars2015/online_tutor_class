@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block title %}會員專區 - 線上課程平台{% endblock %}
+
+{% block content %}
+<nav class="bg-white shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16 items-center">
+            <div class="flex items-center space-x-4">
+                <a href="/" class="text-xl font-bold text-indigo-600">線上課程平台</a>
+                <a href="/courses" class="text-gray-600 hover:text-gray-900">課程總覽</a>
+            </div>
+            <a href="/logout" class="text-gray-600 hover:text-gray-800">登出</a>
+        </div>
+    </div>
+</nav>
+
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <h1 class="text-3xl font-bold text-gray-900 mb-6">會員專區</h1>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <h3 class="text-gray-500 text-sm mb-1">會員</h3>
+            <p class="text-2xl font-bold">{{ user.username }}</p>
+            <p class="text-gray-600 text-sm">{{ user.email }}</p>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <h3 class="text-gray-500 text-sm mb-1">帳戶餘額</h3>
+            <p class="text-3xl font-bold text-indigo-600">${{ user.balance }}</p>
+            <form action="/recharge" method="POST" class="mt-4 flex gap-2">
+                <input type="number" name="amount" placeholder="金額" required class="flex-1 px-3 py-2 border rounded-md">
+                <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">儲值</button>
+            </form>
+            <form action="/payment-notify" method="POST" class="mt-2">
+                <button type="submit" class="w-full bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700">通知入帳</button>
+            </form>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <h3 class="text-gray-500 text-sm mb-1">會員等級</h3>
+            <p class="text-2xl font-bold">VIP {{ user.level }}</p>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-xl font-semibold mb-4">已購買課程</h2>
+            {% if purchases|length == 0 %}
+            <p class="text-gray-500">還沒有購買任何課程</p>
+            {% else %}
+            <div class="space-y-4">
+                {% for p in purchases %}
+                <div class="flex justify-between items-center border-b pb-2">
+                    <span>課程 #{{ p.course_id }}</span>
+                    <span class="text-gray-500 text-sm">{{ p.purchased_at.strftime('%Y-%m-%d') if p.purchased_at else '' }}</span>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            <a href="/courses" class="mt-4 inline-block text-indigo-600 hover:text-indigo-800">瀏覽課程</a>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-xl font-semibold mb-4">交易歷史</h2>
+            {% if payments|length == 0 %}
+            <p class="text-gray-500">沒有交易記錄</p>
+            {% else %}
+            <div class="space-y-4 max-h-64 overflow-y-auto">
+                {% for p in payments %}
+                <div class="border-b pb-2">
+                    <div class="flex justify-between">
+                        <span class="font-medium">{{ p.payment_type }}</span>
+                        <span class="{{ 'text-green-600' if p.amount >= 0 else 'text-red-600' }}">
+                            {{ '+' if p.amount >= 0 else '' }}{{ p.amount }}
+                        </span>
+                    </div>
+                    <div class="text-gray-500 text-sm">{{ p.note or '' }}</div>
+                    <div class="text-gray-400 text-xs">{{ p.created_at.strftime('%Y-%m-%d %H:%M') if p.created_at else '' }}</div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}後台管理{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-100">
+    <nav class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center space-x-4">
+                    <a href="/admin" class="text-xl font-bold text-indigo-600">管理後台</a>
+                    <a href="/admin/users" class="text-gray-600 hover:text-gray-900">會員管理</a>
+                    <a href="/admin/courses" class="text-gray-600 hover:text-gray-900">課程管理</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-gray-700">管理員: {{ admin.username }}</span>
+                    <a href="/admin/logout" class="text-gray-600 hover:text-gray-800">登出</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <h1 class="text-3xl font-bold text-gray-900 mb-6">後台概覽</h1>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-gray-500 text-sm mb-1">會員總數</h3>
+                <p class="text-3xl font-bold text-indigo-600">{{ stats.total_users }}</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-gray-500 text-sm mb-1">課程總數</h3>
+                <p class="text-3xl font-bold text-indigo-600">{{ stats.total_courses }}</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-gray-500 text-sm mb-1">上架課程</h3>
+                <p class="text-3xl font-bold text-green-600">{{ stats.active_courses }}</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-gray-500 text-sm mb-1">報名人數</h3>
+                <p class="text-3xl font-bold text-indigo-600">{{ stats.total_enrollments }}</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-gray-500 text-sm mb-1">總營收</h3>
+                <p class="text-3xl font-bold text-green-600">${{ stats.total_revenue }}</p>
+            </div>
+        </div>
+
+        <div class="mt-8 bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-xl font-semibold mb-4">快速操作</h2>
+            <div class="flex gap-4">
+                <a href="/admin/users" class="bg-indigo-600 text-white px-6 py-3 rounded-md hover:bg-indigo-700">管理會員</a>
+                <a href="/admin/courses" class="bg-green-600 text-white px-6 py-3 rounded-md hover:bg-green-700">管理課程</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

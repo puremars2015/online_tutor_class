@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}調整會員餘額{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-100">
+    <nav class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center space-x-4">
+                    <a href="/admin" class="text-xl font-bold text-indigo-600">管理後台</a>
+                    <a href="/admin/users" class="text-gray-600 hover:text-gray-900">會員管理</a>
+                    <a href="/admin/courses" class="text-gray-600 hover:text-gray-900">課程管理</a>
+                </div>
+                <a href="/admin/logout" class="text-gray-600 hover:text-gray-800">登出</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-md mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <h1 class="text-3xl font-bold text-gray-900 mb-6">調整會員餘額</h1>
+
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <p class="mb-4"><strong>會員:</strong> {{ user.username }} ({{ user.email }})</p>
+            <p class="mb-4"><strong>目前餘額:</strong> ${{ user.balance }}</p>
+
+            <form action="/admin/users/{{ user.id }}/adjust" method="POST">
+                <div class="mb-4">
+                    <label class="block text-gray-700 mb-1">調整金額</label>
+                    <input type="number" name="amount" step="0.01" required class="w-full px-3 py-2 border rounded-md" placeholder="正數增加，負數減少">
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-gray-700 mb-1">備註</label>
+                    <input type="text" name="note" class="w-full px-3 py-2 border rounded-md" placeholder="調整原因">
+                </div>
+
+                <div class="flex gap-2">
+                    <a href="/admin/users" class="px-4 py-2 border rounded-md hover:bg-gray-50">取消</a>
+                    <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">確認調整</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
